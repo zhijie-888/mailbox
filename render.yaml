@@ -1,0 +1,26 @@
+# Render 一键部署蓝图（Blueprint）
+# 在 Render 里选择 “New” -> “Blueprint” -> 连接本仓库，就会自动按这个文件创建服务和数据库。
+databases:
+  - name: mailbox-db
+    databaseName: mailbox
+    user: mailbox
+    plan: free
+
+services:
+  - type: web
+    name: mailbox
+    runtime: python
+    plan: free
+    # 构建：装依赖 + 收集静态文件 + 建表
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
+    # 启动：用 gunicorn 跑起来
+    startCommand: "gunicorn mailbox_project.wsgi:application"
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mailbox-db
+          property: connectionString

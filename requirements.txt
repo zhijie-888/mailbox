@@ -1,0 +1,11 @@
+# Web 框架
+Django>=5.0,<6.0
+
+# 线上运行服务器（Render 用它来启动网站）
+gunicorn>=21.2,<23.0
+
+# 线上托管静态文件（CSS/JS），免配置
+whitenoise>=6.6,<7.0
+
+# 支持通过 DATABASE_URL 连接云端数据库（Postgres）
+dj-database-url>=2.1,<3.0

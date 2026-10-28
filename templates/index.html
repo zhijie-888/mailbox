@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>密信 · Mailbox</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+</head>
+<body>
+    <!-- 背景装饰光斑 -->
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+    <div class="bg-glow glow-3"></div>
+
+    <main class="container">
+        <!-- 顶部标题 -->
+        <header class="hero">
+            <div class="logo">
+                <span class="logo-mark">✉</span>
+                <span class="logo-text">密信 <em>Mailbox</em></span>
+            </div>
+            <h1>无需登录的私密信箱</h1>
+            <p class="subtitle">凭识别码给指定的人写信，或留下一封所有人都能看到的公开信。</p>
+        </header>
+
+        <!-- 切换标签 -->
+        <nav class="tabs" role="tablist">
+            <button class="tab-btn active" data-tab="send">✍️ 写信</button>
+            <button class="tab-btn" data-tab="receive">📨 收信</button>
+            <button class="tab-btn" data-tab="public">🌐 公开信板</button>
+        </nav>
+
+        <!-- ========== 写信面板 ========== -->
+        <section class="panel active" id="panel-send">
+            <div class="card">
+                <div class="field">
+                    <label class="label">发送方式</label>
+                    <div class="seg">
+                        <label class="seg-item">
+                            <input type="radio" name="scope" value="private" checked />
+                            <span>指定收信人</span>
+                        </label>
+                        <label class="seg-item">
+                            <input type="radio" name="scope" value="public" />
+                            <span>公开信件</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field" id="toIdField">
+                    <label class="label" for="toId">收信人识别码</label>
+                    <input type="text" id="toId" placeholder="例如：alice-2026（告诉对方这个码，TA 就能收信）" autocomplete="off" />
+                </div>
+
+                <div class="field">
+                    <label class="label" for="fromId">你的称呼（可选）</label>
+                    <input type="text" id="fromId" placeholder="匿名" autocomplete="off" />
+                </div>
+
+                <div class="field">
+                    <label class="label" for="content">信件内容</label>
+                    <textarea id="content" rows="5" placeholder="写点什么吧……" maxlength="2000"></textarea>
+                    <div class="counter"><span id="charCount">0</span> / 2000</div>
+                </div>
+
+                <button class="btn-primary" id="sendBtn">发送信件</button>
+                <p class="hint" id="sendHint">提示：把“收信人识别码”私下告诉对方，对方在“收信”里输入同样的码即可读取。</p>
+            </div>
+        </section>
+
+        <!-- ========== 收信面板 ========== -->
+        <section class="panel" id="panel-receive">
+            <div class="card">
+                <div class="field">
+                    <label class="label" for="myId">我的识别码</label>
+                    <div class="inline">
+                        <input type="text" id="myId" placeholder="输入你的识别码" autocomplete="off" />
+                        <button class="btn-ghost" id="loadInboxBtn">查看我的信</button>
+                    </div>
+                </div>
+                <p class="hint">页面会每 5 秒自动刷新，新信件会即时出现。</p>
+                <div class="letter-list" id="inboxList">
+                    <div class="empty">还没有信件。用上方输入你的识别码试试。</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== 公开信板面板 ========== -->
+        <section class="panel" id="panel-public">
+            <div class="card">
+                <div class="board-head">
+                    <h2>公开信板</h2>
+                    <span class="live"><span class="dot"></span> 实时</span>
+                </div>
+                <p class="hint">所有人都能看到这里的信件，每 5 秒自动刷新。</p>
+                <div class="letter-list" id="publicList">
+                    <div class="empty">还没有公开信。去“写信”里发一封公开信吧。</div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="foot">用 Django + 纯前端构建 · 无登录 · 数据仅作演示</footer>
+    </main>
+
+    <!-- 轻提示 -->
+    <div class="toast" id="toast"></div>
+
+    <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>
